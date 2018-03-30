@@ -107,6 +107,7 @@ pip-selfcheck.json
 
 # All .idea stuff:
 .idea/*
+src/agent/docker/_compose_files/fabric-1.0/examples/chaincode/go/.idea/*
 
 ## File-based project format:
 *.iws
@@ -199,3 +200,4 @@ jspm_packages
 src/agent/ansible/run/*
 src/agent/ansible/vars/*
 src/agent/ansible/*.retry
+

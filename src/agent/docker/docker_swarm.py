@@ -397,7 +397,7 @@ def _compose_set_env(name, worker_api, mapped_ports=SERVICE_PORTS,
         os.environ['SYSLOG_SERVER'] = log_server
 
 
-def compose_up(name, host, mapped_ports, config=None, timeout=5):
+def compose_up(name, host, mapped_ports, config=None, timeout=30):
     """ Compose up a cluster
 
     :param name: The name of the cluster

@@ -80,7 +80,7 @@ setEnvs () {
 	t="\${ORG${org}_ADMIN_MSP}" && export CORE_PEER_MSPCONFIGPATH=`eval echo $t`
 	t="\${ORG${org}_PEER${peer}_TLS_ROOTCERT}" && export CORE_PEER_TLS_ROOTCERT_FILE=`eval echo $t`
 
-	#env |grep CORE
+	env |grep CORE
 }
 
 checkOSNAvailability() {

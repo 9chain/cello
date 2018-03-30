@@ -16,8 +16,8 @@ fi
 # (once for each channel is enough, we make it concurrent here)
 echo_b "=== Instantiating chaincode on channel ${APP_CHANNEL}... ==="
 
-chaincodeInstantiate "${APP_CHANNEL}" 1 0 ${CC_NAME} ${CC_INIT_VERSION} ${CC_INIT_ARGS}
-chaincodeInstantiate "${APP_CHANNEL}" 2 0 ${CC_NAME} ${CC_INIT_VERSION} ${CC_INIT_ARGS}
+#chaincodeInstantiate "${APP_CHANNEL}" 1 0 ${CC_NAME} ${CC_INIT_VERSION} ${CC_INIT_ARGS}
+chaincodeInstantiate "${APP_CHANNEL}" 3 0 ${CC_NAME} ${CC_INIT_VERSION} ${CC_INIT_ARGS}
 
 echo_g "=== Instantiate chaincode on channel ${APP_CHANNEL} done ==="
 

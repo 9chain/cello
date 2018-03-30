@@ -171,8 +171,8 @@ class ClusterHandler(object):
         explorer_ports, all_ports = {}, {}
 
         if peer_num > 1:
-            org_num_list = [1, 2]
-            peer_num_end = int(peer_num / 2)
+            org_num_list = [1, 2, 3, 4]
+            peer_num_end = int(peer_num / 4)
         else:
             org_num_list = [1]
             peer_num_end = 1
@@ -237,7 +237,7 @@ class ClusterHandler(object):
             return None
 
         peer_num = int(config.get_data().get("size", 4))
-        ca_num = 2 if peer_num > 1 else 1
+        ca_num = 4 if peer_num > 1 else 1
 
         cid = uuid4().hex
         mapped_ports, peer_ports, ca_ports, orderer_ports, explorer_ports = \

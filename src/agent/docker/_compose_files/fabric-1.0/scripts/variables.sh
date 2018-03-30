@@ -16,34 +16,37 @@ TIMEOUT="30"
 MAX_RETRY=5
 
 # Organization and peers
-ORGS=( 1 2 )
-PEERS=( 0 1 )
+ORGS=( 1 2 3 4 )
+PEERS=( 0 )
 #: "${ORGS:=( 1 2 )}"
 #: "${PEERS:=( 0 1 )}"
 
 # MSP related paths
-ORDERER_TLS_CA=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
-ORDERER_MSP=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp
+ORDERER_TLS_CA=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/msp/tlscacerts/tlsca.9chain.net-cert.pem
+ORDERER_MSP=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/msp
 
-ORDERER_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt
-ORG1_PEER0_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-ORG1_PEER1_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt
-ORG2_PEER0_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
-ORG2_PEER1_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls/ca.crt
+ORDERER_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/tls/ca.crt
+ORG1_PEER0_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.9chain.net/peers/peer0.org1.9chain.net/tls/ca.crt
+ORG2_PEER0_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.9chain.net/peers/peer0.org2.9chain.net/tls/ca.crt
+ORG3_PEER0_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org3.9chain.net/peers/peer0.org3.9chain.net/tls/ca.crt
+ORG4_PEER0_TLS_ROOTCERT=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org4.9chain.net/peers/peer0.org4.9chain.net/tls/ca.crt
 
-ORDERER_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp
-ORG1_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
-ORG2_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+ORDERER_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/9chain.net/users/Admin@9chain.net/msp
+ORG1_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.9chain.net/users/Admin@org1.9chain.net/msp
+ORG2_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.9chain.net/users/Admin@org2.9chain.net/msp
+ORG3_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org3.9chain.net/users/Admin@org3.9chain.net/msp
+ORG4_ADMIN_MSP=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org4.9chain.net/users/Admin@org4.9chain.net/msp
 ORG1MSP=Org1MSP
 ORG2MSP=Org2MSP
 ORG3MSP=Org3MSP
+ORG4MSP=Org4MSP
 
 # Node URLS
-ORDERER_URL="orderer.example.com:7050"
-ORG1_PEER0_URL="peer0.org1.example.com:7051"
-ORG1_PEER1_URL="peer1.org1.example.com:7051"
-ORG2_PEER0_URL="peer0.org2.example.com:7051"
-ORG2_PEER1_URL="peer1.org2.example.com:7051"
+ORDERER_URL="orderer.9chain.net:7050"
+ORG1_PEER0_URL="peer0.org1.9chain.net:7051"
+ORG2_PEER0_URL="peer0.org2.9chain.net:7051"
+ORG3_PEER0_URL="peer0.org3.9chain.net:7051"
+ORG4_PEER0_URL="peer0.org4.9chain.net:7051"
 
 # Chaincode exp02 related
 CC_02_NAME="exp02"
@@ -75,19 +78,21 @@ CC_QUERY_ARGS=${CC_02_QUERY_ARGS}
 CORE_PEER_TLS_ENABLED="true"
 
 # Generate configs
-GEN_IMG=yeasy/hyperledger-fabric:1.0.5  # working dir is `/go/src/github.com/hyperledger/fabric`
+GEN_IMG=yeasy/hyperledger-fabric:1.1.0  # working dir is `/go/src/github.com/hyperledger/fabric`
 GEN_CONTAINER=generator
 FABRIC_CFG_PATH=/etc/hyperledger/fabric
 CHANNEL_ARTIFACTS=channel-artifacts
 CRYPTO_CONFIG=crypto-config
 ORDERER_GENESIS=orderer.genesis.block
-ORDERER_PROFILE=TwoOrgsOrdererGenesis
+ORDERER_PROFILE=FourOrgsOrdererGenesis
 APP_CHANNEL_TX=new_${APP_CHANNEL}.tx
 UPDATE_ANCHOR_ORG1_TX=Org1MSPanchors.tx
 UPDATE_ANCHOR_ORG2_TX=Org2MSPanchors.tx
+UPDATE_ANCHOR_ORG3_TX=Org3MSPanchors.tx
+UPDATE_ANCHOR_ORG4_TX=Org4MSPanchors.tx
 
 # CONFIGTXLATOR
-CTL_IMG=yeasy/hyperledger-fabric:1.0.5
+CTL_IMG=yeasy/hyperledger-fabric:1.1.0
 CTL_CONTAINER=configtxlator
 CTL_BASE_URL=http://127.0.0.1:7059
 CTL_ENCODE_URL=${CTL_BASE_URL}/protolator/encode

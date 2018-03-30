@@ -65,12 +65,12 @@ echo_b "Generate genesis block for system channel using configtx.yaml"
 [ -f ${MODE}/${CHANNEL_ARTIFACTS}/${ORDERER_GENESIS} ] || gen_con_exec configtxgen -profile ${ORDERER_PROFILE} -outputBlock /tmp/${CHANNEL_ARTIFACTS}/${ORDERER_GENESIS}
 
 echo_b "Create the new app channel tx using configtx.yaml"
-[ -f ${MODE}/${CHANNEL_ARTIFACTS}/${APP_CHANNEL_TX} ] || gen_con_exec configtxgen -profile TwoOrgsChannel -outputCreateChannelTx /tmp/$CHANNEL_ARTIFACTS/${APP_CHANNEL_TX} -channelID ${APP_CHANNEL}
+[ -f ${MODE}/${CHANNEL_ARTIFACTS}/${APP_CHANNEL_TX} ] || gen_con_exec configtxgen -profile FourOrgsChannel -outputCreateChannelTx /tmp/$CHANNEL_ARTIFACTS/${APP_CHANNEL_TX} -channelID ${APP_CHANNEL}
 gen_con_exec bash -c "configtxgen -inspectChannelCreateTx /tmp/${CHANNEL_ARTIFACTS}/${APP_CHANNEL_TX} > /tmp/${CHANNEL_ARTIFACTS}/${APP_CHANNEL_TX}.json"
 
 echo_b "Create the anchor peer configuration tx using configtx.yaml"
-[ -f ${MODE}/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG1_TX} ] || gen_con_exec configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate /tmp/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG1_TX} -channelID ${APP_CHANNEL} -asOrg ${ORG1MSP}
-[ -f ${MODE}/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG2_TX} ] || gen_con_exec configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate /tmp/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG2_TX} -channelID ${APP_CHANNEL} -asOrg ${ORG2MSP}
+[ -f ${MODE}/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG1_TX} ] || gen_con_exec configtxgen -profile FourOrgsChannel -outputAnchorPeersUpdate /tmp/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG1_TX} -channelID ${APP_CHANNEL} -asOrg ${ORG1MSP}
+[ -f ${MODE}/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG2_TX} ] || gen_con_exec configtxgen -profile FourOrgsChannel -outputAnchorPeersUpdate /tmp/${CHANNEL_ARTIFACTS}/${UPDATE_ANCHOR_ORG2_TX} -channelID ${APP_CHANNEL} -asOrg ${ORG2MSP}
 
 echo_b "Output the json for each org"
 [ -f ${MODE}/${CHANNEL_ARTIFACTS}/${ORG1MSP}.json ] || gen_con_exec bash -c "configtxgen -printOrg ${ORG1MSP} >/tmp/${CHANNEL_ARTIFACTS}/${ORG1MSP}.json"
