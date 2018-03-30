@@ -34,8 +34,8 @@ PREV_VERSION?=0.8.0-beta
 # Building image usage
 DOCKER_NS ?= hyperledger
 BASENAME ?= $(DOCKER_NS)/cello
-VERSION ?= 0.8.0-rc1
-IS_RELEASE=false
+VERSION ?= 0.8.0
+IS_RELEASE=true
 
 DOCKER_BASE_x86_64=ubuntu:xenial
 DOCKER_BASE_ppc64le=ppc64le/ubuntu:xenial
@@ -175,34 +175,17 @@ doc: ##@Create local online documentation and start serve
 
 # Use like "make log service=dashboard"
 log: ##@Log tail special service log, Use like "make log service=dashboard"
-	docker-compose logs -f ${service} --tail=200
+	docker-compose logs --tail=200 -f ${service}
 
 logs: ##@Log tail for all service log
 	docker-compose logs -f --tail=200
-
-# Use like "make redeploy service=dashboard"
-redeploy: ##@Service Redeploy single service, Use like "make redeploy service=dashboard"
-	bash scripts/master_node/redeploy.sh ${service}
 
 image-clean: clean ##@Clean all existing images to rebuild
 	echo "Clean all cello related images, may need to remove all containers before"
 	docker images | grep "hyperledger/cello-" | awk '{print $3}' | xargs docker rmi -f
 
 initial-env: ##@Configuration Initial Configuration for dashboard
-	cp default.env .env
-	$(SED) 's/\(STATIC_FOLDER=\).*/\1${STATIC_FOLDER}/' .env
-	$(SED) 's/\(TEMPLATE_FOLDER=\).*/\1${TEMPLATE_FOLDER}/' .env
-	$(SED) 's/\(NPM_REGISTRY=\).*/\1${NPM_REGISTRY_REPLACE}/' .env
-	$(SED) 's/\(DEV=\).*/\1${DEV}/' .env
-	$(SED) 's/\(ROOT_PATH=\).*/\1${ROOT_PATH_REPLACE}/' .env
-	$(SED) 's/\(ENABLE_EMAIL_ACTIVE=\).*/\1${ENABLE_EMAIL_ACTIVE}/' .env
-	$(SED) 's/\(SMTP_SERVER=\).*/\1${SMTP_SERVER}/' .env
-	$(SED) 's/\(SMTP_PORT=\).*/\1${SMTP_PORT}/' .env
-	$(SED) 's/\(SMTP_AUTH_USERNAME=\).*/\1${SMTP_AUTH_USERNAME}/' .env
-	$(SED) 's/\(SMTP_AUTH_PASSWORD=\).*/\1${SMTP_AUTH_PASSWORD}/' .env
-	$(SED) 's/\(FROM_EMAIL=\).*/\1${FROM_EMAIL}/' .env
-	$(SED) 's/\(WEBROOT=\).*/\1${WEBROOT}/' .env
-	$(SED) 's/\(THEME=\).*/\1${THEME}/' .env
+	@envsubst < env.tmpl > .env
 
 start: ##@Service Start service
 	@$(MAKE) $(START_OPTIONS)
@@ -267,6 +250,5 @@ HELP_FUN = \
 	restart \
 	setup-master \
 	setup-worker \
-	redeploy \
 	start \
 	stop
