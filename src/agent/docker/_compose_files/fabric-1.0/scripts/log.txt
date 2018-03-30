@@ -1,0 +1,8 @@
+[36m[001 03-30 02:40:03.15 UTC] [github.com/hyperledger/fabric/msp/mgmt] main.Execute.ExecuteC.execute.func1.chaincodeQuery.InitCmdFactory.GetDefaultSigner.GetLocalMSP -> DEBU[0m Returning existing local MSP
+[36m[002 03-30 02:40:03.15 UTC] [github.com/hyperledger/fabric/msp] main.Execute.ExecuteC.execute.func1.chaincodeQuery.InitCmdFactory.GetDefaultSigner.GetDefaultSigningIdentity -> DEBU[0m Obtaining default signing identity
+[003 03-30 02:40:03.15 UTC] [github.com/hyperledger/fabric/peer/chaincode] main.Execute.ExecuteC.execute.func1.chaincodeQuery.chaincodeInvokeOrQuery.getChaincodeSpec.checkChaincodeCmdParams -> INFO[0m Using default escc
+[004 03-30 02:40:03.15 UTC] [github.com/hyperledger/fabric/peer/chaincode] main.Execute.ExecuteC.execute.func1.chaincodeQuery.chaincodeInvokeOrQuery.getChaincodeSpec.checkChaincodeCmdParams -> INFO[0m Using default vscc
+[36m[005 03-30 02:40:03.15 UTC] [github.com/hyperledger/fabric/msp] main.Execute.ExecuteC.execute.func1.chaincodeQuery.chaincodeInvokeOrQuery.ChaincodeInvokeOrQuery.GetSignedProposal.Sign -> DEBU[0m Sign: plaintext: 0A98070A7208031A0B0883C7F6D50510...0C7175657279486973746F72790A0161 
+[36m[006 03-30 02:40:03.15 UTC] [github.com/hyperledger/fabric/msp] main.Execute.ExecuteC.execute.func1.chaincodeQuery.chaincodeInvokeOrQuery.ChaincodeInvokeOrQuery.GetSignedProposal.Sign -> DEBU[0m Sign: digest: 5CF2876EF9BAC486DA79D02D21E24EAB52C9C8BEBF1BA0A2B3F26636512C2331 
+Query Result: []
+[007 03-30 02:40:03.16 UTC] [main] main -> INFO[0m Exiting.....
