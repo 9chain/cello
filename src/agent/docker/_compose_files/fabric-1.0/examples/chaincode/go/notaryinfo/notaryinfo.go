@@ -2,13 +2,11 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"strconv"
-	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
+	"encoding/json"
 )
 
 // NotaryInfoChaincode example simple Chaincode implementation
@@ -28,9 +26,11 @@ func (t *NotaryInfoChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Respon
 		return t.put(stub, args)
 	} else if function == "queryHistory" {
 		return t.queryHistory(stub, args)
+	} else if function == "queryState" {
+		return t.queryState(stub, args)
 	}
 
-	return shim.Error("Invalid invoke function name. Expecting \"put\" \"queryHistory\"")
+	return shim.Error("Invalid invoke function name. Expecting \"put\" \"queryHistory\" \"queryState\"")
 }
 
 func (t *NotaryInfoChaincode) put(stub shim.ChaincodeStubInterface, args []string) pb.Response {
@@ -49,7 +49,18 @@ func (t *NotaryInfoChaincode) put(stub shim.ChaincodeStubInterface, args []strin
 		}
 	}
 
-	return shim.Success([]byte(fmt.Sprintf("{\"TxId\": %s}", stub.GetTxID())))
+	p := struct {
+		TxId string `json:"tx_id"`
+	} {
+		stub.GetTxID(),
+	}
+
+	data, err := json.Marshal(p)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(data)
 }
 
 func (t *NotaryInfoChaincode) queryHistory(stub shim.ChaincodeStubInterface, args []string) pb.Response {
@@ -67,46 +78,49 @@ func (t *NotaryInfoChaincode) queryHistory(stub shim.ChaincodeStubInterface, arg
 	}
 	defer resultsIterator.Close()
 
-	// buffer is a JSON array containing historic values for the marble
-	var buffer bytes.Buffer
-	buffer.WriteString("[")
-
-	bArrayMemberAlreadyWritten := false
+	var results []interface{}
 	for resultsIterator.HasNext() {
 		response, err := resultsIterator.Next()
 		if err != nil {
 			return shim.Error(err.Error())
 		}
-		// Add a comma before array members, suppress it for the first array member
-		if bArrayMemberAlreadyWritten == true {
-			buffer.WriteString(",")
-		}
-		buffer.WriteString("{\"TxId\":")
-		buffer.WriteString("\"")
-		buffer.WriteString(response.TxId)
-		buffer.WriteString("\"")
 
-		buffer.WriteString(", \"Value\":")
-		buffer.WriteString(string(response.Value))
-
-		buffer.WriteString(", \"Timestamp\":")
-		buffer.WriteString("\"")
-		buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
-		buffer.WriteString("\"")
-
-		buffer.WriteString(", \"IsDelete\":")
-		buffer.WriteString("\"")
-		buffer.WriteString(strconv.FormatBool(response.IsDelete))
-		buffer.WriteString("\"")
-
-		buffer.WriteString("}")
-		bArrayMemberAlreadyWritten = true
+		results = append(results, response)
 	}
-	buffer.WriteString("]")
 
-	fmt.Printf("queryHistory returning:\n%s\n", buffer.String())
+	data, err := json.Marshal(results)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
 
-	return shim.Success(buffer.Bytes())
+	fmt.Printf("queryHistory returning:\n%s\n", data)
+	return shim.Success(data)
+}
+
+func (t *NotaryInfoChaincode) queryState(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	var key = args[0]
+	fmt.Println("Query history of key:", key)
+
+	value, err := stub.GetState(key)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	p := struct {
+		State []byte `json:"state"`
+	} {
+		value,
+	}
+	data, err := json.Marshal(p)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	return shim.Success(data)
 }
 
 func main() {

@@ -25,10 +25,10 @@ fi
 # pull fabric images
 ARCH=`uname -m | sed 's|i686|x86|' | sed 's|x64|x86_64|'`
 BASEIMAGE_RELEASE=0.3.2
-BASE_VERSION=1.0.5
-PROJECT_VERSION=1.0.5
-IMG_TAG=1.0.5
-HLF_VERSION=1.0.5  # TODO: should be the same with src/common/utils.py
+BASE_VERSION=1.1.0
+PROJECT_VERSION=1.1.0
+IMG_TAG=1.1.0
+HLF_VERSION=1.1.0  # TODO: should be the same with src/common/utils.py
 
 echo_b "Downloading fabric images from DockerHub...with tag = ${IMG_TAG}... need a while"
 # TODO: we may need some checking on pulling result?
@@ -65,7 +65,7 @@ for IMG in mysql:5.7 yeasy/blockchain-explorer:0.1.0-preview; do
 done
 
  # TODO: fix this if there's official images
-IMG_TAG=1.0.4
+IMG_TAG=0.4.5
 echo_b "Downloading and retag images for kafka/zookeeper separately, as they are still v1.0.4"
 for IMG in kafka zookeeper; do
 	HLF_IMG=hyperledger/fabric-${IMG}

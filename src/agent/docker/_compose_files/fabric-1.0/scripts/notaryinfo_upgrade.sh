@@ -13,7 +13,7 @@ elif [ -f scripts/func.sh ]; then
 fi
 
 CC_NAME="notaryinfo"
-CC_UPGRADE_VERSION=0.5
+CC_UPGRADE_VERSION=0.7.4
 CC_PATH="examples/chaincode/go/notaryinfo"
 CC_UPGRADE_ARGS='{"Args":["upgrade"]}'
 #Upgrade to new version

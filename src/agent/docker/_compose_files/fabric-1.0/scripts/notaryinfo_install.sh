@@ -15,7 +15,7 @@ fi
 ## Install chaincode on all peers
 CC_NAME="notaryinfo"
 CC_PATH="examples/chaincode/go/notaryinfo"
-CC_VERSION=0.5
+CC_VERSION=0.7.4
 echo_b "=== Installing chaincode ${CC_NAME} on all 4 peers... ==="
 
 for org in "${ORGS[@]}"

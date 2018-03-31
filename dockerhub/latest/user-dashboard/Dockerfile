@@ -36,7 +36,7 @@ ENV PATH ${PATH}:/node_modules/.bin
 RUN mkdir -p /usr/app
 RUN cp -r /tmp/cello/user-dashboard /usr/app/src
 WORKDIR /usr/app/src
-ENV FABRIC_VERSION 1.0.5
+ENV FABRIC_VERSION 1.1.0
 RUN cd /tmp && ARCH=$(echo "$(uname -s|tr '[:upper:]' '[:lower:]'|sed 's/mingw64_nt.*/windows/')-$(uname -m | sed 's/x86_64/amd64/g')" | awk '{print tolower($0)}') && echo $ARCH &&wget -c https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric/hyperledger-fabric/${ARCH}-${FABRIC_VERSION}/hyperledger-fabric-${ARCH}-${FABRIC_VERSION}.tar.gz && tar -zxvf hyperledger-fabric-${ARCH}-${FABRIC_VERSION}.tar.gz && mv bin/configtxgen /usr/local/bin/configtxgen
 RUN mkdir -p /etc/hyperledger
 RUN cp -r /tmp/cello/user-dashboard/fabric/fabric /etc/hyperledger/fabric
