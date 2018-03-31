@@ -362,6 +362,7 @@ def _compose_set_env(name, worker_api, mapped_ports=SERVICE_PORTS,
                      config=None):
     envs = {
         'COMPOSE_PROJECT_NAME': name,
+        'FABRIC_DATA_PATH': "/opt/cello/data/fabric-export",
         'CLUSTER_LOG_LEVEL': log_level,
         'CLUSTER_NETWORK': CLUSTER_NETWORK + "_{}".format(
             config['consensus_plugin']),

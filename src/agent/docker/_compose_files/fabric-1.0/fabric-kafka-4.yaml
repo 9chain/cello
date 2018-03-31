@@ -27,6 +27,7 @@ services:
     ports:
       - ${CA_ORG1_ECAP_PORT}:7054
     volumes:
+      - ${FABRIC_DATA_PATH}/ca1:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org1.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -44,6 +45,7 @@ services:
     ports:
       - ${CA_ORG2_ECAP_PORT}:7054
     volumes:
+      - ${FABRIC_DATA_PATH}/ca2:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org2.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -61,6 +63,7 @@ services:
     ports:
       - ${CA_ORG3_ECAP_PORT}:7054
     volumes:
+      - ${FABRIC_DATA_PATH}/ca3:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org3.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -78,6 +81,7 @@ services:
     ports:
       - ${CA_ORG4_ECAP_PORT}:7054
     volumes:
+      - ${FABRIC_DATA_PATH}/ca4:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org4.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -99,6 +103,8 @@ services:
     ports:
       - ${ORDERER_PORT}:7050
     volumes:
+    - ${FABRIC_DATA_PATH}/orderer/orderer:/var/hyperledger/orderer
+    - ${FABRIC_DATA_PATH}/orderer/production:/var/hyperledger/production
     - ${COMPOSE_PROJECT_PATH}/kafka/channel-artifacts/orderer.genesis.block:/var/hyperledger/orderer/orderer.genesis.block
     - ${COMPOSE_PROJECT_PATH}/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/msp:/var/hyperledger/orderer/msp
     - ${COMPOSE_PROJECT_PATH}/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/tls/:/var/hyperledger/orderer/tls
@@ -140,6 +146,7 @@ services:
       - ${PEER0_ORG1_EVENT_PORT}:7053
     volumes: # docker.sock is mapped as the default CORE_VM_ENDPOINT
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${FABRIC_DATA_PATH}/org1/peer0:/var/hyperledger/production
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org1.9chain.net/peers/peer0.org1.9chain.net/msp:/etc/hyperledger/fabric/msp
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org1.9chain.net/peers/peer0.org1.9chain.net/tls:/etc/hyperledger/fabric/tls
     command: peer node start
@@ -174,6 +181,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=268435456 #256M
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${FABRIC_DATA_PATH}/org2/peer0:/var/hyperledger/production
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org2.9chain.net/peers/peer0.org2.9chain.net/msp:/etc/hyperledger/fabric/msp
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org2.9chain.net/peers/peer0.org2.9chain.net/tls:/etc/hyperledger/fabric/tls
     command: peer node start
@@ -208,6 +216,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=268435456 #256M
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${FABRIC_DATA_PATH}/org3/peer0:/var/hyperledger/production
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org3.9chain.net/peers/peer0.org3.9chain.net/msp:/etc/hyperledger/fabric/msp
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org3.9chain.net/peers/peer0.org3.9chain.net/tls:/etc/hyperledger/fabric/tls
     command: peer node start
@@ -242,6 +251,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=268435456 #256M
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${FABRIC_DATA_PATH}/org4/peer0:/var/hyperledger/production
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org4.9chain.net/peers/peer0.org4.9chain.net/msp:/etc/hyperledger/fabric/msp
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org4.9chain.net/peers/peer0.org4.9chain.net/tls:/etc/hyperledger/fabric/tls
     command: peer node start
@@ -455,6 +465,20 @@ services:
     command: bash -c 'sleep 30; node main.js'
     #command: bash -c 'while true; do sleep 20180101; done'
 
+  apisrv:
+    image: registry.cn-hangzhou.aliyuncs.com/9chain/apisrv:0.1
+    container_name: ${COMPOSE_PROJECT_NAME}_apisrv
+    hostname: apisrv
+    restart: always
+    volumes:
+      - ${FABRIC_DATA_PATH}/apisrv:/data
+      - ${COMPOSE_PROJECT_PATH}:/home/share/workspace/go/src/github.com/hyperledger/cello/src/agent/docker/_compose_files/fabric-1.0/
+    environment:
+      - NBCAPID_CFG_DIR=/data/nbcapid/cfg
+    ports:
+      - "9000:8080"
+    depends_on:
+      - explorer
 
 networks:
   default:
