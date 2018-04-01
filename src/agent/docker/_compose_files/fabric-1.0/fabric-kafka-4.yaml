@@ -453,7 +453,7 @@ services:
     hostname: explorer
     restart: always
     volumes:
-      - /home/share/workspace/go/src/github.com/hyperledger/blockchain-explorer:/blockchain-explorer
+      #- /home/share/workspace/go/src/github.com/hyperledger/blockchain-explorer:/blockchain-explorer
       - ${COMPOSE_PROJECT_PATH}/explorer-artifacts/config.json:/blockchain-explorer/config.json
       - ${COMPOSE_PROJECT_PATH}/crypto-config:/blockchain-explorer/first-network/crypto-config
     ports:
@@ -486,7 +486,7 @@ services:
     environment:
       - NBCAPID_CFG_DIR=/data/nbcapid/cfg
     ports:
-      - "9000:8080"
+      - "127.0.0.1:9000:8080"
     depends_on:
       - explorer
 
