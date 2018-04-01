@@ -24,6 +24,7 @@ services:
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.9chain.net-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/783837619d2a4d5cec061ecd1166a0b61672af6dd4299609f7841dcd23063058_sk
+      - GODEBUG=netdns=go
     ports:
       - ${CA_ORG1_ECAP_PORT}:7054
     volumes:
@@ -42,6 +43,7 @@ services:
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.9chain.net-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/e66ce577056af956fd47f7a81b02aaa156aead22b4300cd0499738d4a3b7b9ec_sk
+      - GODEBUG=netdns=go
     ports:
       - ${CA_ORG2_ECAP_PORT}:7054
     volumes:
@@ -60,6 +62,7 @@ services:
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org3.9chain.net-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c1300b33ba5ec51899314f5f7db8f7d56bfbfb50a508b8332d60737fe9eeff57_sk
+      - GODEBUG=netdns=go
     ports:
       - ${CA_ORG3_ECAP_PORT}:7054
     volumes:
@@ -78,6 +81,7 @@ services:
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org4.9chain.net-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/88bd4d32321b474a5909353b9b7be4c9be48453ff3653d49a3afcf636ba5cebe_sk
+      - GODEBUG=netdns=go
     ports:
       - ${CA_ORG4_ECAP_PORT}:7054
     volumes:
@@ -100,6 +104,7 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      - GODEBUG=netdns=go
     ports:
       - ${ORDERER_PORT}:7050
     volumes:
@@ -140,6 +145,7 @@ services:
       - CORE_PEER_ID=peer0.org1.9chain.net
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_ADDRESS=peer0.org1.9chain.net:7051
+      - GODEBUG=netdns=go
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     ports:
       - ${PEER0_ORG1_GRPC_PORT}:7051
@@ -179,6 +185,7 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=268435456 #256M
+      - GODEBUG=netdns=go
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${FABRIC_DATA_PATH}/org2/peer0:/var/hyperledger/production
@@ -214,6 +221,7 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=268435456 #256M
+      - GODEBUG=netdns=go
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${FABRIC_DATA_PATH}/org3/peer0:/var/hyperledger/production
@@ -249,6 +257,7 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=268435456 #256M
+      - GODEBUG=netdns=go
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${FABRIC_DATA_PATH}/org4/peer0:/var/hyperledger/production
@@ -268,6 +277,7 @@ services:
       - CORE_LOGGING_FORMAT=%{color}[%{id:03x} %{time:01-02 15:04:05.00 MST}] [%{longpkg}] %{callpath} -> %{level:.4s}%{color:reset} %{message}
       - CORE_PEER_TLS_ENABLED=true  # to enable TLS, change to true
       - ORDERER_CA=/etc/hyperledger/fabric/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/msp/tlscacerts/tlsca.9chain.net-cert.pem
+      - GODEBUG=netdns=go
     depends_on:
       - orderer.9chain.net
       - peer0.org1.9chain.net
