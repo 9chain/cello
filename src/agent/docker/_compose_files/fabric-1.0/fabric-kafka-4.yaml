@@ -292,7 +292,7 @@ services:
       - ${COMPOSE_PROJECT_PATH}/kafka/configtx.yaml:/etc/hyperledger/fabric/configtx.yaml
       - ${COMPOSE_PROJECT_PATH}/kafka/channel-artifacts:/tmp/channel-artifacts
       - ${COMPOSE_PROJECT_PATH}/examples:/opt/gopath/src/examples
-    command: bash -c 'sleep 15; cd /tmp; source scripts/func.sh; bash scripts/test_channel_create.sh; bash scripts/test_channel_join.sh; bash scripts/notaryinfo_install.sh; while true; do sleep 20180101; done'
+    command: bash -c 'sleep 60; cd /tmp; source scripts/func.sh; bash scripts/test_channel_create.sh; bash scripts/test_channel_join.sh; bash scripts/notaryinfo_install.sh; while true; do sleep 20180101; done'
 
   mysql: # mysql service
     image: mysql:5.7
@@ -483,6 +483,8 @@ services:
     volumes:
       - ${FABRIC_DATA_PATH}/apisrv:/data
       - ${COMPOSE_PROJECT_PATH}:/home/share/workspace/go/src/github.com/hyperledger/cello/src/agent/docker/_compose_files/fabric-1.0/
+      # for deug
+      - /home/share/workspace/go/src/github.com/9chain/sdksrvd:/opt/workspace/sdksrvd
     environment:
       - NBCAPID_CFG_DIR=/data/nbcapid/cfg
     ports:

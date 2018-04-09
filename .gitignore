@@ -117,6 +117,8 @@ src/agent/docker/_compose_files/fabric-1.0/examples/chaincode/go/.idea/*
 # IntelliJ
 /out/
 
+log.txt
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 

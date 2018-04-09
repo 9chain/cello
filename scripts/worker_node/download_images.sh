@@ -25,10 +25,10 @@ fi
 # pull fabric images
 ARCH=`uname -m | sed 's|i686|x86|' | sed 's|x64|x86_64|'`
 BASEIMAGE_RELEASE=0.3.2
-BASE_VERSION=1.0.5
-PROJECT_VERSION=1.0.5
-IMG_TAG=1.0.5
-HLF_VERSION=1.0.5  # TODO: should be the same with src/common/utils.py
+BASE_VERSION=1.1.0
+PROJECT_VERSION=1.1.0
+IMG_TAG=1.1.0
+HLF_VERSION=1.1.0  # TODO: should be the same with src/common/utils.py
 
 echo_b "Downloading fabric images from DockerHub...with tag = ${IMG_TAG}... need a while"
 # TODO: we may need some checking on pulling result?

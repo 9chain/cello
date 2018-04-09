@@ -84,6 +84,7 @@ services:
       - FROM_EMAIL=$FROM_EMAIL
       - WEBROOT=$WEBROOT
       - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+      - FABRIC_VERSION=1.1.0
     volumes:
       - ./user-dashboard:/usr/app/src
       - /opt/cello/baas:/opt/data

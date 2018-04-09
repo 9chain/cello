@@ -15,7 +15,7 @@ CLUSTER_PORT_START = int(os.getenv("CLUSTER_PORT_START", 7050))
 
 # Fabric image related varible
 # should be the same with scripts/worker_node/download_images.sh
-HLF_VERSION = '1.0.5'
+HLF_VERSION = '1.1.0'
 
 # vSphere requires this
 ARCH = 'x86_64'
