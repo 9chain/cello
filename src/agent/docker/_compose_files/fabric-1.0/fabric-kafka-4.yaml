@@ -28,7 +28,7 @@ services:
     ports:
       - ${CA_ORG1_ECAP_PORT}:7054
     volumes:
-      - ${FABRIC_DATA_PATH}/ca1:/etc/hyperledger/fabric-ca-server
+      #- ${FABRIC_DATA_PATH}/ca1:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org1.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -47,7 +47,7 @@ services:
     ports:
       - ${CA_ORG2_ECAP_PORT}:7054
     volumes:
-      - ${FABRIC_DATA_PATH}/ca2:/etc/hyperledger/fabric-ca-server
+      #- ${FABRIC_DATA_PATH}/ca2:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org2.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -66,7 +66,7 @@ services:
     ports:
       - ${CA_ORG3_ECAP_PORT}:7054
     volumes:
-      - ${FABRIC_DATA_PATH}/ca3:/etc/hyperledger/fabric-ca-server
+      #- ${FABRIC_DATA_PATH}/ca3:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org3.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -85,7 +85,7 @@ services:
     ports:
       - ${CA_ORG4_ECAP_PORT}:7054
     volumes:
-      - ${FABRIC_DATA_PATH}/ca4:/etc/hyperledger/fabric-ca-server
+      #- ${FABRIC_DATA_PATH}/ca4:/etc/hyperledger/fabric-ca-server
       - ${COMPOSE_PROJECT_PATH}/crypto-config/peerOrganizations/org4.9chain.net/ca/:/etc/hyperledger/fabric-ca-server-config
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
 
@@ -108,7 +108,6 @@ services:
     ports:
       - ${ORDERER_PORT}:7050
     volumes:
-    - ${FABRIC_DATA_PATH}/orderer/orderer:/var/hyperledger/orderer
     - ${FABRIC_DATA_PATH}/orderer/production:/var/hyperledger/production
     - ${COMPOSE_PROJECT_PATH}/kafka/channel-artifacts/orderer.genesis.block:/var/hyperledger/orderer/orderer.genesis.block
     - ${COMPOSE_PROJECT_PATH}/crypto-config/ordererOrganizations/9chain.net/orderers/orderer.9chain.net/msp:/var/hyperledger/orderer/msp
@@ -119,6 +118,7 @@ services:
       - ${COMPOSE_PROJECT_NAME}_peer0.org3.9chain.net:peer0.org3.9chain.net
       - ${COMPOSE_PROJECT_NAME}_peer0.org4.9chain.net:peer0.org4.9chain.net
     command: orderer
+    #command: bash -c 'while true; do sleep 20180101; done'
 
   peer0.org1.9chain.net:
     image: "hyperledger/fabric-peer:${HLF_VERSION-1.0.0}"
@@ -286,13 +286,15 @@ services:
       - peer0.org4.9chain.net
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     volumes:
+      #- ${FABRIC_DATA_PATH}/cli:/tmp
       - ${COMPOSE_PROJECT_PATH}/scripts:/tmp/scripts
       - ${COMPOSE_PROJECT_PATH}/crypto-config.yaml:/etc/hyperledger/fabric/crypto-config.yaml
       - ${COMPOSE_PROJECT_PATH}/crypto-config:/etc/hyperledger/fabric/crypto-config
       - ${COMPOSE_PROJECT_PATH}/kafka/configtx.yaml:/etc/hyperledger/fabric/configtx.yaml
       - ${COMPOSE_PROJECT_PATH}/kafka/channel-artifacts:/tmp/channel-artifacts
       - ${COMPOSE_PROJECT_PATH}/examples:/opt/gopath/src/examples
-    command: bash -c 'sleep 60; cd /tmp; source scripts/func.sh; bash scripts/test_channel_create.sh; bash scripts/test_channel_join.sh; bash scripts/notaryinfo_install.sh; while true; do sleep 20180101; done'
+    #command: bash -c 'sleep 60; cd /tmp; source scripts/func.sh; bash scripts/test_channel_create.sh; bash scripts/test_channel_join.sh; bash scripts/notaryinfo_install.sh; while true; do sleep 20180101; done'
+    command: bash -c 'sleep 60; cd /tmp; while true; do sleep 20180101; done'
 
   mysql: # mysql service
     image: mysql:5.7
@@ -332,6 +334,10 @@ services:
       - zookeeper2
     expose:
       - '9092'
+    volumes:
+      - kafka0_logs:/opt/kafka/logs
+      - kafka0_config:/opt/kafka/config
+      - ${FABRIC_DATA_PATH}/kafka0/tmp:/tmp
 
   kafka1:
     # official repo doesn't have latest tag, however, kafka changes version recently
@@ -356,6 +362,10 @@ services:
       - zookeeper2
     expose:
       - '9092'
+    volumes:
+      - kafka1_logs:/opt/kafka/logs
+      - kafka1_config:/opt/kafka/config
+      - ${FABRIC_DATA_PATH}/kafka1/tmp:/tmp
 
   kafka2:
     # official repo doesn't have latest tag, however, kafka changes version recently
@@ -380,6 +390,10 @@ services:
       - zookeeper2
     expose:
       - '9092'
+    volumes:
+      - kafka2_logs:/opt/kafka/logs
+      - kafka2_config:/opt/kafka/config
+      - ${FABRIC_DATA_PATH}/kafka2/tmp:/tmp
 
   kafka3:
     # official repo doesn't have latest tag, however, kafka changes version recently
@@ -404,6 +418,10 @@ services:
       - zookeeper2
     expose:
       - '9092'
+    volumes:
+      - kafka3_logs:/opt/kafka/logs
+      - kafka3_config:/opt/kafka/config
+      - ${FABRIC_DATA_PATH}/kafka3/tmp:/tmp
 
   zookeeper0:
     image: "hyperledger/fabric-zookeeper:${HLF_VERSION-1.0.0}"
@@ -418,6 +436,9 @@ services:
       - '2181'
       - '2888'
       - '3888'
+#    volumes:
+#      - ${FABRIC_DATA_PATH}/zookeeper0/conf:/conf
+#      - ${FABRIC_DATA_PATH}/zookeeper0/tmp:/tmp
 
   zookeeper1:
     image: "hyperledger/fabric-zookeeper:${HLF_VERSION-1.0.0}"
@@ -432,6 +453,9 @@ services:
       - '2181'
       - '2888'
       - '3888'
+#    volumes:
+#      - ${FABRIC_DATA_PATH}/zookeeper1/conf:/conf
+#      - ${FABRIC_DATA_PATH}/zookeeper1/tmp:/tmp
 
   zookeeper2:
     image: "hyperledger/fabric-zookeeper:${HLF_VERSION-1.0.0}"
@@ -446,6 +470,9 @@ services:
       - '2181'
       - '2888'
       - '3888'
+#    volumes:
+#      - ${FABRIC_DATA_PATH}/zookeeper2/conf:/conf
+#      - ${FABRIC_DATA_PATH}/zookeeper2/tmp:/tmp
 
   explorer:
     image: yeasy/blockchain-explorer:0.1.0-preview
@@ -491,6 +518,16 @@ services:
       - "127.0.0.1:9000:8080"
     depends_on:
       - explorer
+
+volumes:
+  kafka0_logs:
+  kafka1_logs:
+  kafka2_logs:
+  kafka3_logs:
+  kafka0_config:
+  kafka1_config:
+  kafka2_config:
+  kafka3_config:
 
 networks:
   default:

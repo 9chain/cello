@@ -13,6 +13,12 @@
 #
 # bash byfn.sh -m generate -c businesschannel
 
+test -e orderer || mkdir orderer
+test -e fabric-peer/peer0-org1 || mkdir -p fabric-peer/peer0-org1
+test -e fabric-peer/peer1-org1 || mkdir -p fabric-peer/peer1-org1
+test -e fabric-peer/peer0-org2 || mkdir -p fabric-peer/peer0-org2
+test -e fabric-peer/peer1-org2 || mkdir -p fabric-peer/peer1-org2
+
 rm -rf  orderer/*
 rm -rf fabric-peer/peer0-org1/*
 rm -rf fabric-peer/peer1-org1/*
