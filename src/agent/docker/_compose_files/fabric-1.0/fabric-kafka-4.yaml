@@ -502,22 +502,38 @@ services:
     command: bash -c 'sleep 30; node main.js'
     #command: bash -c 'while true; do sleep 20180101; done'
 
-  apisrv:
-    image: registry.cn-hangzhou.aliyuncs.com/9chain/apisrv:0.1
-    container_name: ${COMPOSE_PROJECT_NAME}_apisrv
-    hostname: apisrv
+  sdksrvd:
+    image: registry.cn-hangzhou.aliyuncs.com/ninechain/sdksrvd:0.2
+    container_name: ${COMPOSE_PROJECT_NAME}_sdksrvd
+    hostname: sdksrvd
     restart: always
     volumes:
-      - ${FABRIC_DATA_PATH}/apisrv:/data
+      - ${FABRIC_DATA_PATH}/sdksrvd:/data
       - ${COMPOSE_PROJECT_PATH}:/home/share/workspace/go/src/github.com/hyperledger/cello/src/agent/docker/_compose_files/fabric-1.0/
       # for deug
-      - /home/share/workspace/go/src/github.com/9chain/sdksrvd:/opt/workspace/sdksrvd
+      #- /home/share/workspace/docker_build_01/docker/sdksrvd/docker-entrypoint.sh:/opt/workspace/docker-entrypoint.sh
+      #- /home/share/workspace/docker_build_01/docker/sdksrvd/start_sdksrvd.sh:/opt/workspace/start_sdksrvd.sh
+    ports:
+      - "8082:8082"
+    depends_on:
+      - explorer
+
+  nbcapid:
+    image: registry.cn-hangzhou.aliyuncs.com/ninechain/nbcapid:0.2
+    container_name: ${COMPOSE_PROJECT_NAME}_nbcapid
+    hostname: nbcapid
+    restart: always
+    volumes:
+      - nbcapid_data:/data
+      - ${COMPOSE_PROJECT_PATH}:/home/share/workspace/go/src/github.com/hyperledger/cello/src/agent/docker/_compose_files/fabric-1.0/
+      # for deug
+      #- /home/share/workspace/go/src/github.com/9chain/sdksrvd:/opt/workspace/sdksrvd
     environment:
       - NBCAPID_CFG_DIR=/data/nbcapid/cfg
     ports:
-      - "127.0.0.1:9000:8080"
+      - "9000:8080"
     depends_on:
-      - explorer
+      - sdksrvd
 
 volumes:
   kafka0_logs:
@@ -528,6 +544,7 @@ volumes:
   kafka1_config:
   kafka2_config:
   kafka3_config:
+  nbcapid_data:
 
 networks:
   default:
